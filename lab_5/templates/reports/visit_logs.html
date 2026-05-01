@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Журнал посещений</h1>
+
+{% if current_user.role and current_user.role.name == 'admin' %}
+    <div class="mb-3">
+        <a href="{{ url_for('reports.page_stats') }}" class="btn btn-outline-primary">Отчёт по страницам</a>
+        <a href="{{ url_for('reports.user_stats') }}" class="btn btn-outline-primary">Отчёт по пользователям</a>
+    </div>
+{% endif %}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>№</th>
+            <th>Пользователь</th>
+            <th>Страница</th>
+            <th>Дата</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for log in logs.items %}
+        <tr>
+            <td>{{ loop.index + (logs.page - 1) * logs.per_page }}</td>
+            <td>
+                {% if log.user %}
+                    {{ log.user.last_name or '' }} {{ log.user.first_name }} {{ log.user.middle_name or '' }}
+                {% else %}
+                    Неаутентифицированный пользователь
+                {% endif %}
+            </td>
+            <td>{{ log.path }}</td>
+            <td>{{ log.created_at | localdatetime }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- пагинация -->
+<nav>
+    <ul class="pagination">
+        {% if logs.has_prev %}
+            <li class="page-item"><a class="page-link" href="{{ url_for('reports.visit_logs', page=logs.prev_num) }}">Предыдущая</a></li>
+        {% endif %}
+        {% for page_num in logs.iter_pages() %}
+            {% if page_num %}
+                <li class="page-item {% if page_num == logs.page %}active{% endif %}">
+                    <a class="page-link" href="{{ url_for('reports.visit_logs', page=page_num) }}">{{ page_num }}</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled"><span class="page-link">...</span></li>
+            {% endif %}
+        {% endfor %}
+        {% if logs.has_next %}
+            <li class="page-item"><a class="page-link" href="{{ url_for('reports.visit_logs', page=logs.next_num) }}">Следующая</a></li>
+        {% endif %}
+    </ul>
+</nav>
+{% endblock %}
