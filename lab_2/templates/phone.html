@@ -1,0 +1,26 @@
+<!--страница с формой для номера телефона-->
+{% extends "base.html" %}
+{% block content %}
+<h1>Проверка номера телефона</h1>
+
+<form method="post" action="{{ url_for('phone') }}" novalidate>
+    <div class="mb-3">
+        <label for="phone" class="form-label">Номер телефона</label>
+        <input type="text" class="form-control {% if error %}is-invalid{% endif %}" 
+               id="phone" name="phone" value="{{ request.form.phone or '' }}">
+        {% if error %}
+            <div class="invalid-feedback">{{ error }}</div>
+        {% endif %}
+        <div class="form-text">
+            Допустимые форматы: +7 (123) 456-75-90, 8(123)4567590, 123.456.75.90 и т.п.
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Проверить</button>
+</form>
+
+{% if formatted_number %}
+    <div class="alert alert-success mt-3" role="alert">
+        Преобразованный номер: {{ formatted_number }}
+    </div>
+{% endif %}
+{% endblock %}
