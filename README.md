@@ -1,3 +1,4 @@
+## Лабораторные работы выполнены студенткой группы 241-326 Пешковой У.И.
 ### [Лабораторная работа №1](https://github.com/UliPi29/web_applications_labs/tree/main/lab_1). Создание шаблона для отображения записи блога
 ### [Лабораторная работа №2](https://github.com/UliPi29/web_applications_labs/tree/main/lab_2). Работа с данными запроса
 ### [Лабораторная работа №3](https://github.com/UliPi29/web_applications_labs/tree/main/lab_3). Реализация аутентификации пользователей
